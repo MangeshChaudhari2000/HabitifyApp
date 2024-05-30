@@ -1,0 +1,79 @@
+<style>
+  .card {
+    margin-top: 20px; /* Adjust the value as needed */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<div class="container">
+  <div class="row justify-content-center mt-3">
+  <% habit.forEach(function(habit) { %>
+  
+        <% if (habit !== '') { %>
+          <div class="card" style="width:100%;max-width:900px">
+            <div class="card-header">
+              <div class="d-flex justify-content-between">
+                <span class="text-capitalize"><i class="fa-brands fa-font-awesome fa-lg " style="color: #FFD43B;"></i>  <%= habit.habit %></span>
+                <span><a href="/delete/?id=<%= habit._id %>"> <i class="fa-solid fa-trash-can fa-fade fa-lg" style="color: #fa0000;"></i></a> </span>
+              </div>
+
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"> <i class="fa-brands fa-golang "></i> <%= habit.goal %></h5>
+              <p class="card-text">
+                <span>
+                  Created at: 
+                  <%= habit.createdAt.toLocaleDateString([], {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  }) %>
+                </span>
+                
+              </p>
+             
+
+            
+      
+              <% let tzoffset = (new Date()).getTimezoneOffset() * 60000, found=false, status='';
+              var today = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 10);
+              habit.check.find((item)=> {
+              if(item.date === today){
+              found = true;
+              status = item.status;
+              }
+              });         
+              
+              %>
+              <div class="d-flex justify-content-between">
+                <div>   <a class="btn" href="/habitStatus/?id=<%= habit._id %>&date=<%= today %>">
+                  <% if(found && status==='done' ){ %>
+                      <abbr title="Click to Undone :(">
+                          <i class="fa-solid fa-circle-check fa-2x"
+                              style="color: green;"></i>
+                      </abbr>
+                      <% } else if(found && status==='reject' ){ %>
+    
+                          <abbr title="Click for Default Value"><i
+                                  class="fa-sharp fa-solid fa-circle-xmark fa-2x"
+                                  style="color: red;"></i></abbr>
+                          <% } else { %>
+    
+                              <abbr title="Click to mark Done!">
+                                  <i class="fa-solid fa-circle-minus fa-2x" style="color:#0d6efd"></i>
+                                  <% } %>
+              </a>
+                <a href="/weekly/?id=<%= habit._id %>" class="btn btn-primary"><i class="fa-solid fa-calendar-week" style="color: #fbfcfd;"></i> Weekly</a>
+      </div>
+                <div><i class="fa-solid fa-check" style="color: #357708;"></i> <%=habit.streak%></div>
+              </div>
+
+           
+            </div>
+          </div>
+        <% } %>
+      
+      <% }); %>
+    </div>
+</div>

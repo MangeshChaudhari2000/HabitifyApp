@@ -1,0 +1,59 @@
+<style>
+  .hidden {
+      display: none;
+  }
+</style>
+
+<div class="container mt-5">
+    <div class="card text-center ">
+        <div class="card-header fs-2 fw-semibold text-capitalize">
+hello
+        </div>
+        <div class="card-body">
+            <div class="table-responsive shadow">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr id="weekdayHeader"></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <% days.forEach(day => {
+                                let found = false;
+                                let status = '';
+                        
+                                habit.check.find(item => {
+                                    if (item.date === day.date) {
+                                        found = true;
+                                        status = item.status;
+                                    }
+                                });
+                            %>
+                            <td>
+                                <a class="btn" href="/habitStatus/?id=<%= habit._id %>&date=<%= day.date %>">
+                                    <% if (found && status === 'done') { %>
+                                    <abbr title="Click to Undone :(">
+                                        <i class="fa-solid fa-circle-check fa-2x" style="color: green;"></i>
+                                    </abbr>
+                                    <% } else if (found && status === 'reject') { %>
+                                    <abbr title="Click for Default Value">
+                                        <i class="fa-sharp fa-solid fa-circle-xmark fa-2x" style="color: red;"></i>
+                                    </abbr>
+                                    <% } else { %>
+                                    <abbr title="Click to mark Done!">
+                                        <i class="fa-solid fa-circle-minus fa-2x" style="color:#0d6efd"></i>
+                                    </abbr>
+                                    <% } %>
+                                </a>
+                            </td>
+                            <% }); %>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-body-secondary">
+           <i class="fa-solid fa-check" style="color: #357708;"></i> <%=habit.streak%>
+        </div>
+      </div>
+ 
+</div>
